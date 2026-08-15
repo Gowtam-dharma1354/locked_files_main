@@ -1,51 +1,72 @@
 /**
  * TeamLogin Component
- * Allows team to enter name and select their batch
- * Then proceed to the competition
+ * Participant-only login screen. Teams enter their team code to continue into the competition.
  */
 
 import React, { useState, useRef, useEffect } from "react";
 import ClubBrand from "./ClubBrand";
+import { supabase } from "../lib/supabaseClient";
 import "./TeamLogin.css";
 
-const BATCHES = [
-  { value: "PGDM_1", label: "PGDM 1st Year" },
-  { value: "PGDM_2", label: "PGDM 2nd Year" },
-  { value: "PGPISM", label: "PGPISM" },
-  { value: "LLM", label: "LLM" }
-];
-
 export default function TeamLogin({ onEnter, onBack }) {
-  const [teamName, setTeamName] = useState("");
-  const [batch, setBatch] = useState("");
+  const [teamCode, setTeamCode] = useState("");
   const [error, setError] = useState("");
-  const teamInputRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    teamInputRef.current?.focus();
+    inputRef.current?.focus();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!teamName.trim()) {
-      setError("Please enter a team name");
+    const trimmedCode = teamCode.trim();
+    if (!trimmedCode) {
+      setError("Please enter your team code.");
       return;
     }
 
-    if (!batch) {
-      setError("Please select a batch");
-      return;
-    }
+    setIsSubmitting(true);
 
-    onEnter({
-      teamName: teamName.trim(),
-      batch
-    });
+    try {
+      const { data: team, error: teamError } = await supabase
+        .from("teams")
+        .select("id, team_name, team_code, batch, status")
+        .eq("team_code", trimmedCode)
+        .maybeSingle();
+
+      if (teamError) {
+        throw teamError;
+      }
+
+      if (!team) {
+        setError("Team code not found. Please contact the admin or check the code again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (team.status === "DISQUALIFIED") {
+        setError("This team is not eligible to continue.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      onEnter({
+        teamId: team.id,
+        teamName: team.team_name,
+        teamCode: team.team_code,
+        batch: team.batch,
+        status: team.status
+      });
+    } catch (submitError) {
+      console.error("Team login failed:", submitError);
+      setError("Unable to find that team code. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-
-  const isFormValid = teamName.trim() && batch;
 
   return (
     <div className="team-login">
@@ -58,70 +79,41 @@ export default function TeamLogin({ onEnter, onBack }) {
         </div>
 
         <div className="login-form-section">
-          <h2 className="form-title">TEAM REGISTRATION</h2>
+          <h2 className="form-title">TEAM LOGIN</h2>
           <p className="form-description">
-            Enter your team details to enter LOCKED FILES
+            Enter your team code to continue to the competition.
           </p>
 
           <form onSubmit={handleSubmit} className="team-form">
-            {/* Team Name Input */}
             <div className="form-group">
-              <label htmlFor="team-name">TEAM NAME</label>
+              <label htmlFor="team-code">TEAM CODE</label>
               <input
-                ref={teamInputRef}
-                id="team-name"
+                ref={inputRef}
+                id="team-code"
                 type="text"
                 className="form-input"
-                value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
-                placeholder="Enter your team name"
-                maxLength={50}
-                aria-label="Team name input"
+                value={teamCode}
+                onChange={(e) => setTeamCode(e.target.value)}
+                placeholder="LF-XXXXXX"
+                maxLength={32}
+                aria-label="Team code"
               />
             </div>
 
-            {/* Batch Selection */}
-            <div className="form-group">
-              <label htmlFor="batch-select">BATCH</label>
-              <select
-                id="batch-select"
-                className="form-select"
-                value={batch}
-                onChange={(e) => setBatch(e.target.value)}
-                aria-label="Batch selection"
-              >
-                <option value="">Select your batch</option>
-                {BATCHES.map((b) => (
-                  <option key={b.value} value={b.value}>
-                    {b.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Error Message */}
             {error && (
               <div className="error-message" role="alert">
                 {error}
               </div>
             )}
 
-            {/* Submit Button */}
             <button
               type="submit"
               className="primary-btn submit-btn"
-              disabled={!isFormValid}
-              aria-label="Enter locked files"
+              disabled={isSubmitting || !teamCode.trim()}
             >
-              ENTER LOCKED FILES <span>→</span>
+              {isSubmitting ? "VERIFYING..." : "ENTER COMPETITION"}
             </button>
           </form>
-        </div>
-
-        <div className="login-footer">
-          <p className="footer-note">
-            The batch you select determines your question paper from File 02 onward.
-          </p>
         </div>
       </div>
     </div>

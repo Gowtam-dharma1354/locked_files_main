@@ -1,9 +1,0 @@
-import { QUESTION_BANK } from "./questionBank";
-
-export const LEVEL_QUESTION_BANKS = {
-  1: QUESTION_BANK,
-  2: QUESTION_BANK,
-  3: QUESTION_BANK,
-  4: QUESTION_BANK,
-  5: QUESTION_BANK
-};

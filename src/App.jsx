@@ -20,6 +20,7 @@ import TaskCompletedPage from "./components/TaskCompletedPage";
 import Admin from "./components/Admin";
 import { COMPETITION_CONFIG } from "./data/competitionConfig";
 import { getQuestionPaper } from "./data/questionPaperSelector";
+import { supabase } from "./lib/supabaseClient";
 import "./styles.css";
 
 const SCREEN_STATES = {
@@ -84,14 +85,80 @@ export default function App() {
   const totalFiles = COMPETITION_CONFIG.TOTAL_FILES;
   const timerDuration = COMPETITION_CONFIG.TIMER_DURATION_SECONDS;
 
+  const createCompetitionSession = async (teamInfo) => {
+    const { data: existingSession } = await supabase
+      .from("competition_sessions")
+      .select("id, team_id, status, current_level")
+      .eq("team_id", teamInfo.teamId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (existingSession) {
+      return existingSession;
+    }
+
+    const { data: settingsRow } = await supabase
+      .from("competition_settings")
+      .select("duration_seconds")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const durationSeconds = settingsRow?.duration_seconds ?? COMPETITION_CONFIG.TIMER_DURATION_SECONDS;
+    const now = new Date();
+    const startedAt = now.toISOString();
+    const expiresAt = new Date(now.getTime() + durationSeconds * 1000).toISOString();
+
+    const { data: createdSession, error: sessionError } = await supabase
+      .from("competition_sessions")
+      .insert({
+        team_id: teamInfo.teamId,
+        status: "NOT_STARTED",
+        current_level: 1,
+        started_at: startedAt,
+        expires_at: expiresAt
+      })
+      .select("id, team_id, status, current_level, started_at, expires_at")
+      .single();
+
+    if (sessionError) {
+      throw sessionError;
+    }
+
+    await supabase.from("competition_events").insert({
+      session_id: createdSession.id,
+      team_id: teamInfo.teamId,
+      event_type: "SESSION_CREATED",
+      metadata: { team_name: teamInfo.teamName, batch: teamInfo.batch, current_level: 1 }
+    });
+
+    return createdSession;
+  };
+
   // Handle team login
-  const handleTeamEnter = (teamInfo) => {
-    setTeamData(teamInfo);
-    setCurrentFile(1);
-    setTimerStartTime(Date.now()); // Start timer when entering File 01
-    const question = loadQuestion(teamInfo.batch, 1);
-    setCurrentQuestion(question);
-    setCurrentScreen(SCREEN_STATES.COMPETITION);
+  const handleTeamEnter = async (teamInfo) => {
+    try {
+      const session = await createCompetitionSession(teamInfo);
+
+      setTeamData({
+        ...teamInfo,
+        sessionId: session.id,
+        teamId: teamInfo.teamId
+      });
+      setCurrentFile(1);
+      setTimerStartTime(Date.now());
+      const question = loadQuestion(teamInfo.batch, 1);
+      setCurrentQuestion(question);
+      setCurrentScreen(SCREEN_STATES.COMPETITION);
+    } catch (error) {
+      console.error("Unable to create competition session:", error);
+      setTeamData(teamInfo);
+      setCurrentFile(1);
+      const question = loadQuestion(teamInfo.batch, 1);
+      setCurrentQuestion(question);
+      setCurrentScreen(SCREEN_STATES.COMPETITION);
+    }
   };
 
   // Handle correct answer - move to next file or complete
@@ -172,6 +239,11 @@ export default function App() {
             onAnswerCorrect={handleAnswerCorrect}
             timerStartTime={timerStartTime}
             timerDuration={timerDuration}
+            sessionId={teamData?.sessionId}
+            teamId={teamData?.teamId}
+            onSessionStarted={(startedAt) => {
+              setTimerStartTime(new Date(startedAt).getTime());
+            }}
           />
         </div>
       );
