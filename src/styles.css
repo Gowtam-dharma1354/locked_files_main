@@ -1,11 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
+  /* Color Palette - Semi-dark + Light */
+  --bg-primary: #F4F6F8;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #E8ECEF;
+  --text-primary: #1A1F2E;
+  --text-secondary: #4A5568;
+  --text-light: #7A8193;
+  --color-navy: #001D4D;
+  --color-navy-light: #1E3A5F;
+  --color-blue: #2E5090;
+  --color-blue-light: #4A7ABF;
+  --color-green: #2D7F4A;
+  --color-green-light: #4BA366;
+  --color-red: #A82E2E;
+  --color-red-light: #D65A5A;
+  --color-gray: #D1D8E0;
+  --color-gray-light: #E8ECEF;
+  --border-color: #D1D8E0;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+
   font-family: Inter, "Segoe UI", Arial, system-ui, sans-serif;
-  color: #e8edf7;
-  background: #05070d;
+  color: var(--text-primary);
+  background: var(--bg-primary);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  line-height: 1.6;
 }
 
 * {
@@ -16,14 +39,37 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 50% 15%, rgba(35, 62, 105, .22), transparent 35%),
-    linear-gradient(135deg, #05070d, #090d16 55%, #040509);
+  background: var(--bg-primary);
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+input,
+select {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 3px rgba(46, 80, 144, 0.1);
 }
 
 .app-shell {
@@ -32,38 +78,40 @@ input {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background: var(--bg-primary);
 }
 
 .scanlines {
   pointer-events: none;
   position: fixed;
   inset: 0;
-  opacity: .06;
+  opacity: 0.02;
   background: repeating-linear-gradient(to bottom,
       transparent 0,
       transparent 3px,
-      #fff 4px);
+      #000 4px);
   z-index: 10;
 }
 
 .topbar {
   width: min(1180px, 92%);
   margin: 0 auto;
-  padding: 28px 0;
+  padding: 20px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  border-bottom: 1px solid var(--border-color);
   font-family: "Space Mono", monospace;
   font-size: 12px;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 .brand {
   display: flex;
   gap: 12px;
   align-items: center;
-  font-weight: 700;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .brand-mark {
@@ -71,13 +119,15 @@ input {
   height: 32px;
   display: grid;
   place-items: center;
-  border: 1px solid #6d8fc6;
-  color: #b9cbea;
+  border: 2px solid var(--color-blue);
+  color: var(--color-blue);
   font-size: 10px;
+  border-radius: 4px;
+  font-weight: 700;
 }
 
 .status {
-  color: #7e8ca5;
+  color: var(--text-light);
 }
 
 .status-dot {
@@ -85,9 +135,9 @@ input {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #7edb9c;
+  background: var(--color-green);
   margin-right: 8px;
-  box-shadow: 0 0 12px rgba(126, 219, 156, .7);
+  box-shadow: 0 0 8px rgba(45, 127, 74, 0.5);
 }
 
 .hero {
@@ -286,7 +336,7 @@ h2 {
 
 .question-text {
   margin: 0;
-  color: #f0f4fc;
+  color: #2e5196;
   font-size: 18px;
   line-height: 1.6;
   font-weight: 500;

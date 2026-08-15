@@ -1,0 +1,308 @@
+/* TaskCompletedPage Component Styles */
+
+.task-completed-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.completed-ambient {
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(46, 80, 144, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.completed-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-blue);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: particle-float 8s ease-in-out infinite;
+}
+
+.particle-one { top: 10%; left: 10%; animation-delay: 0s; }
+.particle-two { top: 20%; right: 15%; animation-delay: 1s; }
+.particle-three { bottom: 20%; left: 20%; animation-delay: 2s; }
+.particle-four { top: 50%; right: 10%; animation-delay: 3s; }
+.particle-five { bottom: 10%; right: 20%; animation-delay: 4s; }
+
+@keyframes particle-float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-20px) translateX(10px); }
+  50% { transform: translateY(-40px) translateX(-10px); }
+  75% { transform: translateY(-20px) translateX(10px); }
+}
+
+.completed-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.completed-header {
+  margin-bottom: 32px;
+}
+
+.completed-eyebrow {
+  color: var(--color-blue) !important;
+  text-shadow: none !important;
+}
+
+.completed-sigil {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 32px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.completed-sigil span {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--color-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spin 3s linear infinite;
+}
+
+.completed-sigil span::before {
+  content: "✓";
+  font-size: 32px;
+  color: var(--color-green);
+  font-weight: 700;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.completed-headline {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--color-navy);
+  margin: 0 0 20px;
+  font-family: "Space Mono", monospace;
+  line-height: 1.1;
+}
+
+.completed-message {
+  font-size: 20px;
+  color: var(--text-secondary);
+  margin: 0 0 32px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.completion-status {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 32px 0;
+}
+
+.completion-marks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.completion-mark {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(45, 127, 74, 0.1);
+  border: 2px solid var(--color-green);
+  border-radius: 50%;
+  font-size: 18px;
+  color: var(--color-green);
+  font-weight: 700;
+  animation: scale-in 0.5s ease;
+}
+
+.completion-mark:nth-child(1) { animation-delay: 0s; }
+.completion-mark:nth-child(2) { animation-delay: 0.1s; }
+.completion-mark:nth-child(3) { animation-delay: 0.2s; }
+.completion-mark:nth-child(4) { animation-delay: 0.3s; }
+.completion-mark:nth-child(5) { animation-delay: 0.4s; }
+.completion-mark:nth-child(n+6) { animation-delay: 0.5s; }
+
+@keyframes scale-in {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.completion-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+  margin: 0;
+  font-family: "Space Mono", monospace;
+}
+
+.details-toggle {
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--color-blue);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+}
+
+.details-toggle:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--color-blue);
+}
+
+.team-details {
+  background: var(--bg-secondary);
+  border: 1px solid var(--color-blue);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  text-align: left;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-light);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.detail-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: "Space Mono", monospace;
+}
+
+.completed-actions {
+  margin: 32px 0;
+}
+
+.restart-btn {
+  padding: 14px 32px;
+  background: var(--color-navy);
+  color: white;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 8px;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.restart-btn:hover {
+  background: var(--color-navy-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.completed-footer {
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 650px) {
+  .completed-headline {
+    font-size: 40px;
+  }
+
+  .completed-message {
+    font-size: 16px;
+  }
+
+  .completion-marks {
+    gap: 6px;
+  }
+
+  .completion-mark {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .restart-btn {
+    padding: 12px 24px;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .completed-sigil span,
+  .completion-mark,
+  .particle {
+    animation: none;
+  }
+
+  .restart-btn {
+    transition: none;
+  }
+}

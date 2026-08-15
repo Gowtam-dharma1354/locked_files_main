@@ -1,0 +1,347 @@
+/**
+ * Live Standings Table Styling
+ */
+
+.standings-table-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.standings-header {
+  padding: 24px 20px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.standings-header h2 {
+  margin: 0 0 4px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1f2e;
+  letter-spacing: 0.5px;
+}
+
+.standings-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.standings-table thead {
+  background: #f9fafb;
+  border-bottom: 2px solid #e5e7eb;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.standings-table th {
+  padding: 14px 12px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sortable-header:hover {
+  background: #f3f4f6;
+}
+
+.sort-indicator {
+  font-size: 12px;
+  color: #2e5090;
+  font-weight: 700;
+}
+
+.standings-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.standings-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.standings-table td {
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Rank Column */
+.rank-cell {
+  width: 50px;
+  text-align: center;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #f0f4f8;
+  border: 2px solid #2e5090;
+  border-radius: 50%;
+  font-weight: 700;
+  color: #2e5090;
+  font-size: 14px;
+}
+
+.team-row.status-active .rank-badge {
+  background: #dbeafe;
+  border-color: #1e40af;
+  color: #1e40af;
+}
+
+.team-row.status-completed .rank-badge {
+  background: #d1fae5;
+  border-color: #065f46;
+  color: #065f46;
+}
+
+/* Team Name Column */
+.team-name-cell {
+  min-width: 160px;
+}
+
+.team-name-link {
+  background: none;
+  border: none;
+  color: #2e5090;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.team-name-link:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+/* Batch Column */
+.batch-cell {
+  min-width: 130px;
+}
+
+.batch-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #f0f4f8;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Score Column */
+.score-cell {
+  text-align: center;
+  min-width: 70px;
+}
+
+.score-cell strong {
+  font-size: 16px;
+  color: #1a1f2e;
+}
+
+/* Files Unlocked Column */
+.files-cell {
+  min-width: 110px;
+}
+
+.files-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #f0f4f8;
+  border-radius: 4px;
+  font-weight: 600;
+  color: #2e5090;
+  font-size: 14px;
+}
+
+/* Current File Column */
+.current-file-cell {
+  min-width: 100px;
+}
+
+.file-display {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #eff6ff;
+  border-left: 3px solid #2e5090;
+  border-radius: 2px;
+  font-weight: 500;
+  color: #1e40af;
+  font-size: 13px;
+}
+
+/* Timestamp Column */
+.timestamp-cell {
+  min-width: 90px;
+}
+
+.timestamp {
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Time Column */
+.time-cell {
+  min-width: 80px;
+}
+
+.time-display {
+  font-family: "Courier New", monospace;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Attempts Column */
+.attempts-cell {
+  text-align: center;
+  width: 80px;
+}
+
+.attempts-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #fef3c7;
+  border-radius: 4px;
+  font-weight: 600;
+  color: #92400e;
+  font-size: 13px;
+}
+
+/* Tab Switches Column */
+.tab-switch-cell {
+  text-align: center;
+  width: 90px;
+}
+
+.tab-switch-cell.normal .tab-switch-badge {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.tab-switch-cell.warning .tab-switch-badge {
+  background: #fed7aa;
+  color: #92400e;
+}
+
+.tab-switch-cell.strong-warning .tab-switch-badge {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+.tab-switch-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Status Column */
+.status-cell {
+  min-width: 120px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* No Teams Message */
+.no-teams-message {
+  padding: 48px 24px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .standings-table {
+    font-size: 13px;
+  }
+
+  .standings-table th,
+  .standings-table td {
+    padding: 10px 8px;
+  }
+
+  .rank-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .standings-table {
+    font-size: 12px;
+    min-width: 900px;
+  }
+
+  .standings-table th,
+  .standings-table td {
+    padding: 8px 6px;
+  }
+
+  .team-name-link {
+    font-size: 13px;
+  }
+
+  .score-cell strong {
+    font-size: 14px;
+  }
+}
+
+/* Rank Change Animation */
+@keyframes rank-change {
+  0% {
+    background: #fef3c7;
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+.team-row.rank-changed {
+  animation: rank-change 1s ease-out;
+}

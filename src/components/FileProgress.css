@@ -1,0 +1,152 @@
+/* FileProgress Component Styles */
+
+.file-progress {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.progress-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: "Space Mono", monospace;
+}
+
+.progress-counter {
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.progress-track {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px;
+  border-radius: 6px;
+  min-width: 48px;
+  background: var(--bg-tertiary);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.progress-symbol {
+  font-size: 14px;
+  font-weight: 700;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.progress-number {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "Space Mono", monospace;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+
+/* Completed state */
+.progress-completed {
+  background: rgba(45, 127, 74, 0.1);
+  border-color: var(--color-green);
+}
+
+.progress-completed .progress-symbol {
+  color: var(--color-green);
+}
+
+.progress-completed .progress-number {
+  color: var(--color-green);
+}
+
+/* Current state */
+.progress-current {
+  background: rgba(46, 80, 144, 0.1);
+  border: 2px solid var(--color-blue);
+}
+
+.progress-current .progress-symbol {
+  color: var(--color-blue);
+  animation: pulse-current 1.5s ease-in-out infinite;
+}
+
+.progress-current .progress-number {
+  color: var(--color-blue);
+  font-weight: 700;
+}
+
+/* Locked state */
+.progress-locked {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+  opacity: 0.7;
+}
+
+.progress-locked .progress-symbol {
+  color: var(--text-light);
+}
+
+.progress-locked .progress-number {
+  color: var(--text-light);
+}
+
+@keyframes pulse-current {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 650px) {
+  .file-progress {
+    padding: 12px;
+  }
+
+  .progress-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .progress-track {
+    gap: 6px;
+  }
+
+  .progress-item {
+    min-width: 40px;
+    padding: 6px;
+  }
+
+  .progress-symbol {
+    font-size: 12px;
+  }
+
+  .progress-number {
+    font-size: 10px;
+  }
+}
