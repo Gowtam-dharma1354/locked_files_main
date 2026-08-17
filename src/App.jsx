@@ -9,6 +9,7 @@ import TeamLogin from "./components/TeamLogin";
 import FileQuestion from "./components/FileQuestion";
 import TaskCompletedPage from "./components/TaskCompletedPage";
 import Admin from "./components/Admin";
+import LiveStandingsFullscreen from "./components/Admin/LiveStandingsFullscreen";
 import { COMPETITION_CONFIG } from "./data/competitionConfig";
 import { getQuestionPaper } from "./data/questionPaperSelector";
 import { supabase } from "./lib/supabaseClient";
@@ -377,6 +378,16 @@ function PlayerExperience() {
     try {
       const session = await createCompetitionSession(teamInfo);
 
+      // Update session status to ACTIVE when competition starts
+      try {
+        await supabase
+          .from("competition_sessions")
+          .update({ status: "ACTIVE" })
+          .eq("id", session.id);
+      } catch (error) {
+        console.error("Unable to update session status to ACTIVE:", error);
+      }
+
       const nextTeamData = {
         ...teamInfo,
         sessionId: session.id,
@@ -402,8 +413,40 @@ function PlayerExperience() {
     }
   };
 
-  const handleAnswerCorrect = (attemptNumber) => {
+  const handleAnswerCorrect = async (attemptNumber) => {
+    if (teamData?.sessionId && teamData?.teamId) {
+      const elapsedSeconds = timerStartTime ? Math.max(0, Math.round((Date.now() - timerStartTime) / 1000)) : 0;
+
+      try {
+        await supabase.from("competition_events").insert({
+          session_id: teamData.sessionId,
+          team_id: teamData.teamId,
+          event_type: "FILE_SOLVED",
+          metadata: {
+            batch: teamData.batch,
+            current_file: currentFile,
+            latest_file_time_seconds: elapsedSeconds,
+            solved_at: new Date().toISOString(),
+            attempt_number: attemptNumber
+          }
+        });
+      } catch (error) {
+        console.error("Unable to save latest file solve time:", error);
+      }
+    }
+
     if (currentFile >= totalFiles) {
+      // Mark session as completed
+      if (teamData?.sessionId) {
+        try {
+          await supabase
+            .from("competition_sessions")
+            .update({ status: "COMPLETED", completed_at: new Date().toISOString() })
+            .eq("id", teamData.sessionId);
+        } catch (error) {
+          console.error("Unable to update session to COMPLETED:", error);
+        }
+      }
       setCurrentScreen(SCREEN_STATES.COMPLETED);
       setShowFullscreenWarning(false);
       setFullscreenMessage("");
@@ -412,6 +455,17 @@ function PlayerExperience() {
       }
     } else {
       const nextFile = currentFile + 1;
+      // Update current_level in database when advancing to next file
+      if (teamData?.sessionId) {
+        try {
+          await supabase
+            .from("competition_sessions")
+            .update({ current_level: nextFile })
+            .eq("id", teamData.sessionId);
+        } catch (error) {
+          console.error("Unable to update current_level:", error);
+        }
+      }
       setCurrentFile(nextFile);
       setCurrentQuestion(loadQuestion(teamData.batch, nextFile));
     }
@@ -550,6 +604,7 @@ export default function App() {
         <Route path="/" element={<PlayerExperience />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/" element={<Admin />} />
+        <Route path="/live-standings" element={<LiveStandingsFullscreen />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

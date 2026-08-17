@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 import AdminFilterBar from "./AdminFilterBar";
 import LiveStandingsTable from "./AdminStandingsTable";
-import { calculateRankings } from "../../lib/rankingService";
+import { calculateRankings, formatTime } from "../../lib/rankingService";
 import { COMPETITION_CONFIG } from "../../data/competitionConfig";
 import { supabase } from "../../lib/supabaseClient";
 
@@ -20,15 +20,16 @@ export default function AdminDashboard({ onTeamClick }) {
     status: "All",
     file: "All"
   });
-  const [loading, setLoading] = useState(true);
 
   const totalFiles = COMPETITION_CONFIG.TOTAL_FILES || 12;
+
+  const handleOpenLiveStandingsTab = () => {
+    window.open("/live-standings", "LiveStandings", "width=1400,height=800");
+  };
 
   // Load live team data from Supabase
   useEffect(() => {
     const loadTeams = async () => {
-      setLoading(true);
-
       try {
         const { data: teamRows, error: teamError } = await supabase
           .from("teams")
@@ -44,23 +45,46 @@ export default function AdminDashboard({ onTeamClick }) {
 
         if (sessionError) throw sessionError;
 
+        const { data: eventRows, error: eventError } = await supabase
+          .from("competition_events")
+          .select("team_id, metadata, created_at")
+          .eq("event_type", "FILE_SOLVED");
+
+        if (eventError) throw eventError;
+
+        const latestSolveByTeam = new Map();
+        (eventRows || []).forEach((event) => {
+          const teamId = event.team_id;
+          const solvedSeconds = Number(event.metadata?.latest_file_time_seconds ?? event.metadata?.solve_time_seconds ?? 0);
+          const value = Number.isFinite(solvedSeconds) ? solvedSeconds : 0;
+          const currentTime = new Date(event.created_at || 0).getTime();
+          const existing = latestSolveByTeam.get(teamId);
+
+          if (!existing || currentTime > new Date(existing.created_at || 0).getTime()) {
+            latestSolveByTeam.set(teamId, { value, created_at: event.created_at });
+          }
+        });
+
         const sessionMap = new Map((sessionRows || []).map((session) => [session.team_id, session]));
 
         const liveTeams = (teamRows || []).map((team) => {
-          const session = sessionMap.get(team.id) || {};
-          const currentLevel = Number(session.current_level ?? 1);
+          const session = sessionMap.get(team.id);
+          // If no session, team hasn't started. If session exists, use session data
+          const currentLevel = session ? Number(session.current_level ?? 1) : 1;
+          const latestSolveSeconds = latestSolveByTeam.get(team.id)?.value ?? null;
+          const sessionStatus = session?.status ?? "NOT_STARTED";
 
           return {
             ...team,
             team_id: team.id,
-            score: Number(session.score ?? 0),
-            status: session.status ?? team.status ?? "NOT_STARTED",
+            score: session ? Number(session.score ?? 0) : 0,
+            status: sessionStatus,
             current_file: currentLevel,
-            files_unlocked: Math.max(0, currentLevel - 1),
-            attempt_count: Number(session.failed_attempts_total ?? 0),
-            tab_switch_count: Number(session.fullscreen_violations ?? 0),
-            last_file_unlocked_at: session.completed_at ?? session.started_at ?? null,
-            time_remaining: session.expires_at ? new Date(session.expires_at).toLocaleTimeString() : null
+            files_unlocked: currentLevel - 1,
+            attempt_count: session ? Number(session.failed_attempts_total ?? 0) : 0,
+            tab_switch_count: session ? Number(session.fullscreen_violations ?? 0) : 0,
+            last_file_unlocked_at: session?.completed_at ?? session?.started_at ?? null,
+            time_remaining: latestSolveSeconds != null && latestSolveSeconds > 0 ? formatTime(latestSolveSeconds) : null
           };
         });
 
@@ -71,12 +95,14 @@ export default function AdminDashboard({ onTeamClick }) {
         console.error("Failed to load teams from Supabase:", err);
         setTeams([]);
         setFilteredTeams([]);
-      } finally {
-        setLoading(false);
       }
     };
 
+    // Load immediately and then set up polling every 2 seconds
     loadTeams();
+    const interval = setInterval(loadTeams, 2000);
+    
+    return () => clearInterval(interval);
   }, [totalFiles]);
 
   // Apply filters when teams or filter state changes
@@ -134,8 +160,14 @@ export default function AdminDashboard({ onTeamClick }) {
           <h1>ADMIN DASHBOARD</h1>
           <p>Live competition monitoring and team standings</p>
         </div>
-        <div className="admin-last-updated">
-          <span>Last updated: {new Date().toLocaleTimeString()}</span>
+        <div className="admin-header-actions">
+          <button 
+            className="btn-open-fullscreen"
+            onClick={handleOpenLiveStandingsTab}
+            title="Open live standings in new tab"
+          >
+            📊 Open Fullscreen
+          </button>
         </div>
       </div>
 
@@ -170,18 +202,11 @@ export default function AdminDashboard({ onTeamClick }) {
       />
 
       {/* Live Standings Table */}
-      {loading ? (
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Loading standings...</p>
-        </div>
-      ) : (
-        <LiveStandingsTable
-          teams={filteredTeams}
-          totalFiles={totalFiles}
-          onTeamClick={handleTeamClick}
-        />
-      )}
+      <LiveStandingsTable
+        teams={filteredTeams}
+        totalFiles={totalFiles}
+        onTeamClick={handleTeamClick}
+      />
     </div>
   );
 }

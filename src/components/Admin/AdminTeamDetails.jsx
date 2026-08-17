@@ -52,7 +52,7 @@ export default function TeamDetails({ teamId, onClose }) {
           batch: teamRow?.batch ?? "—",
           status: session.status ?? teamRow?.status ?? "NOT_STARTED",
           score: Number(session.score ?? 0),
-          files_unlocked: Math.max(0, currentLevel - 1),
+          files_unlocked: currentLevel - 1,
           current_file: currentLevel,
           last_file_unlocked_at: session.completed_at ?? session.started_at ?? "—",
           start_time: session.started_at ?? "—",
