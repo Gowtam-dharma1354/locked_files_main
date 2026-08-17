@@ -8,9 +8,9 @@
 
 import React, { useState, useEffect } from "react";
 import "./AdminTeamDetails.css";
-import { generateMockTeamDetails } from "../../lib/mockAdminData";
 import { getCurrentFileDisplay, getFilesUnlockedDisplay, getStatusStyle } from "../../lib/rankingService";
 import { COMPETITION_CONFIG } from "../../data/competitionConfig";
+import { supabase } from "../../lib/supabaseClient";
 
 export default function TeamDetails({ teamId, onClose }) {
   const [team, setTeam] = useState(null);
@@ -19,16 +19,61 @@ export default function TeamDetails({ teamId, onClose }) {
   const totalFiles = COMPETITION_CONFIG.TOTAL_FILES || 12;
 
   useEffect(() => {
-    // TODO: Replace with Supabase query
-    setLoading(true);
-    try {
-      const mockTeam = generateMockTeamDetails(teamId, totalFiles);
-      setTeam(mockTeam);
-    } catch (err) {
-      console.error("Failed to load team details:", err);
-    } finally {
-      setLoading(false);
-    }
+    const loadTeamDetails = async () => {
+      setLoading(true);
+
+      try {
+        const { data: teamRow, error: teamError } = await supabase
+          .from("teams")
+          .select("id, team_name, team_code, batch, status")
+          .eq("id", teamId)
+          .maybeSingle();
+
+        if (teamError) throw teamError;
+
+        const { data: sessionRows, error: sessionError } = await supabase
+          .from("competition_sessions")
+          .select(
+            "team_id, status, current_level, score, started_at, expires_at, completed_at, failed_attempts_total, fullscreen_violations"
+          )
+          .eq("team_id", teamId)
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (sessionError) throw sessionError;
+
+        const session = sessionRows?.[0] || {};
+        const currentLevel = Number(session.current_level ?? 1);
+
+        const liveTeam = {
+          team_id: teamRow?.id ?? teamId,
+          team_name: teamRow?.team_name ?? "Unknown Team",
+          team_code: teamRow?.team_code ?? "—",
+          batch: teamRow?.batch ?? "—",
+          status: session.status ?? teamRow?.status ?? "NOT_STARTED",
+          score: Number(session.score ?? 0),
+          files_unlocked: Math.max(0, currentLevel - 1),
+          current_file: currentLevel,
+          last_file_unlocked_at: session.completed_at ?? session.started_at ?? "—",
+          start_time: session.started_at ?? "—",
+          completion_time: session.completed_at ? new Date(session.completed_at).toLocaleTimeString() : null,
+          time_remaining: session.expires_at ? new Date(session.expires_at).toLocaleTimeString() : null,
+          attempt_count: Number(session.failed_attempts_total ?? 0),
+          tab_switch_count: Number(session.fullscreen_violations ?? 0),
+          file_history: [],
+          activity_timeline: []
+        };
+
+        setTeam(liveTeam);
+      } catch (err) {
+        console.error("Failed to load team details from Supabase:", err);
+        setTeam(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTeamDetails();
   }, [teamId, totalFiles]);
 
   if (loading) {

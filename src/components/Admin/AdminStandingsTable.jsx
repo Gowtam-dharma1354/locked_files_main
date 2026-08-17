@@ -189,6 +189,12 @@ export default function LiveStandingsTable({ teams, totalFiles, onTeamClick, sor
         </table>
       </div>
 
+      <div className="standings-footer">
+        <span className="standings-footer-title">STANDINGS</span>
+        <span className="standings-footer-meta">{sortedTeams.length} teams shown</span>
+        <span className="standings-footer-status">LIVE</span>
+      </div>
+
       {sortedTeams.length === 0 && (
         <div className="no-teams-message">
           <p>No teams match the selected filters</p>

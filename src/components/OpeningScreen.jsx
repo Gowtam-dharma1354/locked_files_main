@@ -8,7 +8,7 @@ import React from "react";
 import ClubBrand from "./ClubBrand";
 import "./OpeningScreen.css";
 
-export default function OpeningScreen({ onSelectTeam, onSelectAdmin }) {
+export default function OpeningScreen({ onSelectTeam }) {
   return (
     <div className="opening-screen">
       <div className="opening-content">
@@ -29,16 +29,6 @@ export default function OpeningScreen({ onSelectTeam, onSelectAdmin }) {
             >
               <div className="login-label">TEAM</div>
               <div className="login-description">Participate in competition</div>
-              <span className="login-arrow">→</span>
-            </button>
-
-            <button
-              className="login-btn admin-btn"
-              onClick={onSelectAdmin}
-              aria-label="Admin Login"
-            >
-              <div className="login-label">ADMIN</div>
-              <div className="login-description">Competition management</div>
               <span className="login-arrow">→</span>
             </button>
           </div>

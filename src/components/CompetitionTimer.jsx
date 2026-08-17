@@ -1,16 +1,14 @@
 /**
  * CompetitionTimer Component
- * Displays countdown timer during competition
- * Designed to receive startTime/endTime from backend later
- * For now, accepts duration in seconds
+ * Displays elapsed time stopwatch during competition
+ * Counts up from 00:00 infinitely
  */
 
 import React, { useState, useEffect } from "react";
 import "./CompetitionTimer.css";
 
-export default function CompetitionTimer({ timerStartTime, duration }) {
-  const [timeRemaining, setTimeRemaining] = useState(duration);
-  const [isExpired, setIsExpired] = useState(false);
+export default function CompetitionTimer({ timerStartTime, fullscreenViolationCount = 0 }) {
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
     if (!timerStartTime) return;
@@ -18,33 +16,30 @@ export default function CompetitionTimer({ timerStartTime, duration }) {
     const interval = setInterval(() => {
       const now = Date.now();
       const elapsed = (now - timerStartTime) / 1000;
-      const remaining = Math.max(0, duration - elapsed);
-
-      setTimeRemaining(remaining);
-
-      if (remaining <= 0) {
-        setIsExpired(true);
-        clearInterval(interval);
-      }
+      setElapsedTime(elapsed);
     }, 100);
 
     return () => clearInterval(interval);
-  }, [timerStartTime, duration]);
+  }, [timerStartTime]);
 
-  const minutes = Math.floor(timeRemaining / 60);
-  const seconds = Math.floor(timeRemaining % 60);
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = Math.floor(elapsedTime % 60);
   const displayMinutes = String(minutes).padStart(2, "0");
   const displaySeconds = String(seconds).padStart(2, "0");
 
-  const isLowTime = timeRemaining < 300; // Less than 5 minutes
-
   return (
-    <div className={`competition-timer ${isLowTime ? "low-time" : ""} ${isExpired ? "expired" : ""}`}>
-      <div className="timer-label">TIME REMAINING</div>
-      <div className="timer-display">
-        {displayMinutes}:{displaySeconds}
+    <div className="competition-timer">
+      <div className="timer-block">
+        <div className="timer-label">TIME ELAPSED</div>
+        <div className="timer-display">
+          {displayMinutes}:{displaySeconds}
+        </div>
       </div>
-      {isExpired && <div className="timer-status">Time's up!</div>}
+
+      <div className="violation-block" aria-live="polite">
+        <div className="timer-label">FULLSCREEN VIOLATIONS</div>
+        <div className="violation-count">{fullscreenViolationCount}</div>
+      </div>
     </div>
   );
 }

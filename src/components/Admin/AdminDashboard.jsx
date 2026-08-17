@@ -7,9 +7,9 @@ import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 import AdminFilterBar from "./AdminFilterBar";
 import LiveStandingsTable from "./AdminStandingsTable";
-import { generateMockTeams } from "../../lib/mockAdminData";
 import { calculateRankings } from "../../lib/rankingService";
 import { COMPETITION_CONFIG } from "../../data/competitionConfig";
+import { supabase } from "../../lib/supabaseClient";
 
 export default function AdminDashboard({ onTeamClick }) {
   const [teams, setTeams] = useState([]);
@@ -24,19 +24,59 @@ export default function AdminDashboard({ onTeamClick }) {
 
   const totalFiles = COMPETITION_CONFIG.TOTAL_FILES || 12;
 
-  // Load mock data on mount
+  // Load live team data from Supabase
   useEffect(() => {
-    // TODO: Replace with Supabase subscription
-    setLoading(true);
-    try {
-      const mockTeams = generateMockTeams(20, totalFiles);
-      setTeams(mockTeams);
-      setFilteredTeams(mockTeams);
-    } catch (err) {
-      console.error("Failed to load teams:", err);
-    } finally {
-      setLoading(false);
-    }
+    const loadTeams = async () => {
+      setLoading(true);
+
+      try {
+        const { data: teamRows, error: teamError } = await supabase
+          .from("teams")
+          .select("id, team_name, team_code, batch, status");
+
+        if (teamError) throw teamError;
+
+        const { data: sessionRows, error: sessionError } = await supabase
+          .from("competition_sessions")
+          .select(
+            "team_id, status, current_level, score, started_at, expires_at, completed_at, failed_attempts_total, fullscreen_violations"
+          );
+
+        if (sessionError) throw sessionError;
+
+        const sessionMap = new Map((sessionRows || []).map((session) => [session.team_id, session]));
+
+        const liveTeams = (teamRows || []).map((team) => {
+          const session = sessionMap.get(team.id) || {};
+          const currentLevel = Number(session.current_level ?? 1);
+
+          return {
+            ...team,
+            team_id: team.id,
+            score: Number(session.score ?? 0),
+            status: session.status ?? team.status ?? "NOT_STARTED",
+            current_file: currentLevel,
+            files_unlocked: Math.max(0, currentLevel - 1),
+            attempt_count: Number(session.failed_attempts_total ?? 0),
+            tab_switch_count: Number(session.fullscreen_violations ?? 0),
+            last_file_unlocked_at: session.completed_at ?? session.started_at ?? null,
+            time_remaining: session.expires_at ? new Date(session.expires_at).toLocaleTimeString() : null
+          };
+        });
+
+        const rankedTeams = calculateRankings(liveTeams);
+        setTeams(rankedTeams);
+        setFilteredTeams(rankedTeams);
+      } catch (err) {
+        console.error("Failed to load teams from Supabase:", err);
+        setTeams([]);
+        setFilteredTeams([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTeams();
   }, [totalFiles]);
 
   // Apply filters when teams or filter state changes

@@ -20,7 +20,7 @@ export default function FileQuestion({
   question,
   onAnswerCorrect,
   timerStartTime,
-  timerDuration
+  fullscreenViolationCount = 0
 }) {
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState(null); // null, 'correct', 'incorrect'
@@ -125,7 +125,10 @@ export default function FileQuestion({
           <div className="file-number">
             FILE {padFileNumber(currentFile)} / {padFileNumber(totalFiles)}
           </div>
-          <CompetitionTimer timerStartTime={timerStartTime} duration={timerDuration} />
+          <CompetitionTimer
+            timerStartTime={timerStartTime}
+            fullscreenViolationCount={fullscreenViolationCount}
+          />
         </div>
       </div>
 

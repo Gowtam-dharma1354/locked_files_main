@@ -2,14 +2,23 @@
 
 .competition-timer {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 12px;
   padding: 12px 16px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   min-width: 120px;
+}
+
+.timer-block,
+.violation-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 110px;
 }
 
 .timer-label {
@@ -20,13 +29,24 @@
   text-transform: uppercase;
 }
 
-.timer-display {
+.timer-display,
+.violation-count {
   font-family: "Space Mono", monospace;
   font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 2px;
   line-height: 1;
+}
+
+.violation-block {
+  border-left: 1px solid var(--border-color);
+  padding-left: 12px;
+}
+
+.violation-count {
+  color: #ff7a7a;
+  font-size: 22px;
 }
 
 .timer-status {
@@ -36,30 +56,7 @@
   letter-spacing: 1px;
 }
 
-/* Low time warning */
-.competition-timer.low-time {
-  background: #FFF8E8;
-  border-color: #FFE8CC;
-}
 
-.competition-timer.low-time .timer-display {
-  color: var(--color-red);
-  animation: pulse 1s ease-in-out infinite;
-}
-
-.competition-timer.low-time .timer-label {
-  color: var(--color-red);
-}
-
-/* Expired state */
-.competition-timer.expired {
-  background: #FFE8E8;
-  border-color: var(--color-red);
-}
-
-.competition-timer.expired .timer-display {
-  color: var(--color-red);
-}
 
 @keyframes pulse {
   0%, 100% {
@@ -73,9 +70,17 @@
 @media (max-width: 650px) {
   .competition-timer {
     min-width: 100px;
+    gap: 8px;
+    padding: 10px 12px;
   }
 
-  .timer-display {
+  .timer-block,
+  .violation-block {
+    min-width: 86px;
+  }
+
+  .timer-display,
+  .violation-count {
     font-size: 18px;
   }
 

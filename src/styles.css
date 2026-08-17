@@ -418,6 +418,83 @@ h2 {
   text-align: center;
 }
 
+.fullscreen-warning-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 18px 20px 22px 20px;
+  pointer-events: none;
+}
+
+.fullscreen-warning-modal {
+  position: relative;
+  width: min(540px, calc(100vw - 32px));
+  background: rgba(244, 246, 248, 0.96);
+  border: 1px solid rgba(30, 58, 95, 0.32);
+  box-shadow: 0 16px 48px rgba(6, 16, 30, 0.16);
+  padding: 18px 20px 16px 20px;
+  pointer-events: auto;
+}
+
+.fullscreen-warning-modal h3 {
+  margin: 0 0 12px;
+  font-family: "Space Mono", monospace;
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: #0d1f33;
+  text-transform: uppercase;
+}
+
+.fullscreen-warning-modal p {
+  margin: 0 0 8px;
+  color: #1a2433;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.fullscreen-warning-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(20, 35, 57, 0.18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  color: #1d2b3d;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.fullscreen-warning-close:hover {
+  background: rgba(46, 80, 144, 0.08);
+}
+
+.fullscreen-warning-modal .submit-btn {
+  margin-top: 16px;
+  width: 100%;
+  font-size: 13px;
+}
+
+.fullscreen-inline-message {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1100;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(26, 31, 46, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #172130;
+}
+
 .access-icon {
   width: 64px;
   height: 64px;
