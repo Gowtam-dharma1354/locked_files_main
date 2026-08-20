@@ -54,6 +54,7 @@ const logSupabaseInsertError = (tableName, payload, error) => {
 export default function Admin() {
   const [session, setSession] = useState(null);
   const [adminEmail, setAdminEmail] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
   const [authMessage, setAuthMessage] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
   const [view, setView] = useState("dashboard");
@@ -92,21 +93,23 @@ export default function Admin() {
   const signInAdmin = async (e) => {
     e.preventDefault();
     setAuthMessage("");
-    if (!adminEmail.trim()) {
-      setAuthMessage("Enter an admin email.");
+    if (!adminEmail.trim() || !adminPassword) {
+      setAuthMessage("Enter your admin email and password.");
       return;
     }
 
     setAuthLoading(true);
-    const { error } = await supabase.auth.signInWithOtp({ email: adminEmail.trim() });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: adminEmail.trim(),
+      password: adminPassword
+    });
     setAuthLoading(false);
 
     if (error) {
-      setAuthMessage(error.message || "Unable to send the login link.");
+      setAuthMessage(error.message || "Unable to sign in with those credentials.");
       return;
     }
-
-    setAuthMessage("Admin sign-in link sent. Check your email and return here after confirming.");
+    setAuthMessage("");
   };
 
   const signOutAdmin = async () => {
@@ -343,7 +346,7 @@ export default function Admin() {
 
             <form onSubmit={signInAdmin} className="team-form">
               <div className="form-group">
-                <label htmlFor="admin-email">ADMIN EMAIL</label>
+                <label htmlFor="admin-email">ADMIN ID / EMAIL</label>
                 <input
                   id="admin-email"
                   type="email"
@@ -354,10 +357,23 @@ export default function Admin() {
                 />
               </div>
 
+              <div className="form-group">
+                <label htmlFor="admin-password">PASSWORD</label>
+                <input
+                  id="admin-password"
+                  type="password"
+                  className="form-input"
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  placeholder="Enter admin password"
+                  autoComplete="current-password"
+                />
+              </div>
+
               {authMessage && <div className="error-message">{authMessage}</div>}
 
               <button type="submit" className="primary-btn submit-btn" disabled={authLoading}>
-                {authLoading ? "SENDING LINK..." : "SEND MAGIC LINK"}
+                {authLoading ? "SIGNING IN..." : "ADMIN SIGN IN"}
               </button>
             </form>
           </div>
