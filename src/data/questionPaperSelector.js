@@ -34,17 +34,17 @@ import { LLM_FILE12 } from "./questionPapers/llm/file12";
 import { LLM_FILE13 } from "./questionPapers/llm/file13";
 import { LLM_FILE14 } from "./questionPapers/llm/file14";
 import { LLM_FILE15 } from "./questionPapers/llm/file15";
-import { PGDM2_PGPISM_FILE05 } from "./questionPapers/pgdm2-pgpism/file05";
-import { PGDM2_PGPISM_FILE06 } from "./questionPapers/pgdm2-pgpism/file06";
-import { PGDM2_PGPISM_FILE07 } from "./questionPapers/pgdm2-pgpism/file07";
-import { PGDM2_PGPISM_FILE08 } from "./questionPapers/pgdm2-pgpism/file08";
-import { PGDM2_PGPISM_FILE09 } from "./questionPapers/pgdm2-pgpism/file09";
-import { PGDM2_PGPISM_FILE10 } from "./questionPapers/pgdm2-pgpism/file10";
-import { PGDM2_PGPISM_FILE11 } from "./questionPapers/pgdm2-pgpism/file11";
-import { PGDM2_PGPISM_FILE12 } from "./questionPapers/pgdm2-pgpism/file12";
-import { PGDM2_PGPISM_FILE13 } from "./questionPapers/pgdm2-pgpism/file13";
-import { PGDM2_PGPISM_FILE14 } from "./questionPapers/pgdm2-pgpism/file14";
-import { PGDM2_PGPISM_FILE15 } from "./questionPapers/pgdm2-pgpism/file15";
+import { PGDM2_PGPISM_FILE05 } from "./questionPapers/pgdm2_pgpism/file05";
+import { PGDM2_PGPISM_FILE06 } from "./questionPapers/pgdm2_pgpism/file06";
+import { PGDM2_PGPISM_FILE07 } from "./questionPapers/pgdm2_pgpism/file07";
+import { PGDM2_PGPISM_FILE08 } from "./questionPapers/pgdm2_pgpism/file08";
+import { PGDM2_PGPISM_FILE09 } from "./questionPapers/pgdm2_pgpism/file09";
+import { PGDM2_PGPISM_FILE10 } from "./questionPapers/pgdm2_pgpism/file10";
+import { PGDM2_PGPISM_FILE11 } from "./questionPapers/pgdm2_pgpism/file11";
+import { PGDM2_PGPISM_FILE12 } from "./questionPapers/pgdm2_pgpism/file12";
+import { PGDM2_PGPISM_FILE13 } from "./questionPapers/pgdm2_pgpism/file13";
+import { PGDM2_PGPISM_FILE14 } from "./questionPapers/pgdm2_pgpism/file14";
+import { PGDM2_PGPISM_FILE15 } from "./questionPapers/pgdm2_pgpism/file15";
 
 /**
  * Get the appropriate question paper for a given batch and file number
