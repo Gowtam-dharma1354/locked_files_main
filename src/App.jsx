@@ -13,6 +13,7 @@ import LiveStandingsFullscreen from "./components/Admin/LiveStandingsFullscreen"
 import { COMPETITION_CONFIG } from "./data/competitionConfig";
 import { getQuestionPaper } from "./data/questionPaperSelector";
 import { supabase } from "./lib/supabaseClient";
+import { getFileScore } from "./lib/rankingService";
 import "./styles.css";
 
 const SCREEN_STATES = {
@@ -323,7 +324,7 @@ function PlayerExperience() {
   const createCompetitionSession = async (teamInfo) => {
     const { data: existingSession } = await supabase
       .from("competition_sessions")
-      .select("id, team_id, status, current_level, fullscreen_violations")
+      .select("id, team_id, status, current_level, score, fullscreen_violations")
       .eq("team_id", teamInfo.teamId)
       .order("created_at", { ascending: false })
       .limit(1)
@@ -355,7 +356,7 @@ function PlayerExperience() {
         started_at: startedAt,
         expires_at: expiresAt
       })
-      .select("id, team_id, status, current_level, started_at, expires_at")
+      .select("id, team_id, status, current_level, score, started_at, expires_at")
       .single();
 
     if (sessionError) {
@@ -391,7 +392,8 @@ function PlayerExperience() {
       const nextTeamData = {
         ...teamInfo,
         sessionId: session.id,
-        teamId: teamInfo.teamId
+        teamId: teamInfo.teamId,
+        score: Number(session.score ?? 0)
       };
 
       setTeamData(nextTeamData);
@@ -414,6 +416,8 @@ function PlayerExperience() {
   };
 
   const handleAnswerCorrect = async (attemptNumber) => {
+    const nextScore = Number(teamData?.score || 0) + getFileScore(currentFile);
+
     if (teamData?.sessionId && teamData?.teamId) {
       const elapsedSeconds = timerStartTime ? Math.max(0, Math.round((Date.now() - timerStartTime) / 1000)) : 0;
 
@@ -441,7 +445,12 @@ function PlayerExperience() {
         try {
           await supabase
             .from("competition_sessions")
-            .update({ status: "COMPLETED", completed_at: new Date().toISOString() })
+            .update({
+              status: "COMPLETED",
+              current_level: totalFiles,
+              score: nextScore,
+              completed_at: new Date().toISOString()
+            })
             .eq("id", teamData.sessionId);
         } catch (error) {
           console.error("Unable to update session to COMPLETED:", error);
@@ -460,12 +469,13 @@ function PlayerExperience() {
         try {
           await supabase
             .from("competition_sessions")
-            .update({ current_level: nextFile })
+            .update({ current_level: nextFile, score: nextScore })
             .eq("id", teamData.sessionId);
         } catch (error) {
           console.error("Unable to update current_level:", error);
         }
       }
+      setTeamData((previousTeamData) => ({ ...previousTeamData, score: nextScore }));
       setCurrentFile(nextFile);
       setCurrentQuestion(loadQuestion(teamData.batch, nextFile));
     }

@@ -59,10 +59,6 @@ export default function LiveStandingsTable({ teams, totalFiles, onTeamClick, sor
           aVal = a.time_remaining || "999:59";
           bVal = b.time_remaining || "999:59";
           break;
-        case "attempt_count":
-          aVal = a.attempt_count || 0;
-          bVal = b.attempt_count || 0;
-          break;
         case "tab_switch_count":
           aVal = a.tab_switch_count || 0;
           bVal = b.tab_switch_count || 0;
@@ -109,9 +105,8 @@ export default function LiveStandingsTable({ teams, totalFiles, onTeamClick, sor
               <SortHeader label="SCORE" column="score" />
               <SortHeader label="FILES UNLOCKED" column="files_unlocked" />
               <SortHeader label="CURRENT FILE" column="current_file" />
-              <SortHeader label="LAST UNLOCKED" column="last_file_unlocked_at" />
               <SortHeader label="TIME" column="time_remaining" />
-              <SortHeader label="ATTEMPTS" column="attempt_count" />
+              <SortHeader label="LAST UNLOCKED" column="last_file_unlocked_at" />
               <SortHeader label="TAB SWITCHES" column="tab_switch_count" />
               <SortHeader label="STATUS" column="status" />
             </tr>
@@ -155,16 +150,12 @@ export default function LiveStandingsTable({ teams, totalFiles, onTeamClick, sor
                     <span className="file-display">{currentFileDisplay}</span>
                   </td>
 
-                  <td className="timestamp-cell">
-                    <span className="timestamp">{team.last_file_unlocked_at || "—"}</span>
-                  </td>
-
                   <td className="time-cell">
                     <span className="time-display">{team.time_remaining || team.completion_time || "—"}</span>
                   </td>
 
-                  <td className="attempts-cell">
-                    <span className="attempts-badge">{team.attempt_count || 0}</span>
+                  <td className="timestamp-cell">
+                    <span className="timestamp">{team.last_file_unlocked_at || "—"}</span>
                   </td>
 
                   <td className={`tab-switch-cell ${tabSwitchLevel}`}>

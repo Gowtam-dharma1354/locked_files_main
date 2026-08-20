@@ -2,15 +2,10 @@
  * Ranking Service
  * Centralized ranking calculation for the competition.
  * 
- * The final scoring formula is NOT YET FINALIZED.
- * This service is structured to accept various ranking criteria.
- * 
- * Future customization points:
- * - score weight
- * - files_unlocked weight
- * - completion_time weight
- * - attempts penalty
- * - other event-defined criteria
+ * Ranking priority:
+ * 1. Files unlocked (descending)
+ * 2. Score (descending)
+ * 3. Elapsed time (ascending)
  */
 
 /**
@@ -29,24 +24,25 @@ export const calculateRankings = (teams, config = {}) => {
   // Sort by ranking criteria
   // TODO: These criteria can be customized via config
   teamsWithRank.sort((a, b) => {
-    // Primary: Score (descending - higher is better)
-    if (b.score !== a.score) {
-      return b.score - a.score;
-    }
-
-    // Secondary: Files unlocked (descending)
+    // Primary: Files unlocked (descending)
     if (b.files_unlocked !== a.files_unlocked) {
       return b.files_unlocked - a.files_unlocked;
     }
 
-    // Tertiary: Completion time (ascending - faster is better)
-    // Only applies to completed teams
-    if (a.status === "COMPLETED" && b.status === "COMPLETED") {
-      const aTime = parseTimeToSeconds(a.time_remaining || "0:00");
-      const bTime = parseTimeToSeconds(b.time_remaining || "0:00");
-      if (aTime !== bTime) {
-        return aTime - bTime;
-      }
+    // Secondary: Score (descending)
+    if (b.score !== a.score) {
+      return b.score - a.score;
+    }
+
+    // Tertiary: Elapsed time (ascending - faster is better)
+    const aTime = a.time_remaining || a.completion_time
+      ? parseTimeToSeconds(a.time_remaining || a.completion_time)
+      : Number.POSITIVE_INFINITY;
+    const bTime = b.time_remaining || b.completion_time
+      ? parseTimeToSeconds(b.time_remaining || b.completion_time)
+      : Number.POSITIVE_INFINITY;
+    if (aTime !== bTime) {
+      return aTime - bTime;
     }
 
     // Quaternary: Fewest attempts (ascending)
@@ -99,39 +95,23 @@ export const formatTime = (seconds) => {
 };
 
 /**
- * Calculate score for a team (MOCK - can be customized)
- * TODO: Replace with actual scoring logic once finalized
- * 
- * Current mock logic:
- * - Base: files_unlocked * 100
- * - Bonus for completion: +500
- * - Penalty for attempts: -5 per attempt (capped)
- * - Bonus for speed: based on time remaining
+ * Return the points awarded for a solved file.
  */
-export const calculateScore = (team, totalFiles = 12, totalTimeSeconds = 7200) => {
+export const getFileScore = (fileNumber) => {
+  const normalizedFileNumber = Number(fileNumber);
+  if (normalizedFileNumber >= 1 && normalizedFileNumber <= 4) return 5;
+  if (normalizedFileNumber >= 5 && normalizedFileNumber <= 11) return 10;
+  if (normalizedFileNumber >= 12 && normalizedFileNumber <= 15) return 15;
+  return 0;
+};
+
+export const calculateScore = (team) => {
+  const filesUnlocked = Math.max(0, Number(team.files_unlocked) || 0);
   let score = 0;
-
-  // Base score: 100 points per file
-  score += (team.files_unlocked || 0) * 100;
-
-  // Completion bonus
-  if (team.status === "COMPLETED") {
-    score += 500;
+  for (let fileNumber = 1; fileNumber <= filesUnlocked; fileNumber += 1) {
+    score += getFileScore(fileNumber);
   }
-
-  // Attempt penalty (light - max -100)
-  const attemptPenalty = Math.min(100, (team.attempt_count || 0) * 5);
-  score -= attemptPenalty;
-
-  // Speed bonus (if not completed, based on time remaining)
-  // If completed, use completion time
-  if (team.status === "COMPLETED" && team.completion_time) {
-    const completionSeconds = parseTimeToSeconds(team.completion_time);
-    const speedBonus = Math.max(0, Math.floor((totalTimeSeconds - completionSeconds) / 10));
-    score += Math.min(300, speedBonus);
-  }
-
-  return Math.max(0, Math.floor(score));
+  return score;
 };
 
 /**
@@ -175,6 +155,6 @@ export const getCurrentFileDisplay = (team, totalFiles) => {
  * Calculate files unlocked display
  */
 export const getFilesUnlockedDisplay = (team, totalFiles) => {
-  const unlocked = team.files_unlocked || 0;
+  const unlocked = team.status === "COMPLETED" ? totalFiles : team.files_unlocked || 0;
   return `${unlocked} / ${totalFiles}`;
 };

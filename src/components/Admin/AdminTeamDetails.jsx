@@ -8,7 +8,7 @@
 
 import React, { useState, useEffect } from "react";
 import "./AdminTeamDetails.css";
-import { getCurrentFileDisplay, getFilesUnlockedDisplay, getStatusStyle } from "../../lib/rankingService";
+import { calculateScore, getCurrentFileDisplay, getFilesUnlockedDisplay, getStatusStyle } from "../../lib/rankingService";
 import { COMPETITION_CONFIG } from "../../data/competitionConfig";
 import { supabase } from "../../lib/supabaseClient";
 
@@ -43,7 +43,12 @@ export default function TeamDetails({ teamId, onClose }) {
         if (sessionError) throw sessionError;
 
         const session = sessionRows?.[0] || {};
-        const currentLevel = Number(session.current_level ?? 1);
+        const currentLevel = session.status === "COMPLETED"
+          ? totalFiles
+          : Number(session.current_level ?? 1);
+        const filesUnlocked = session.status === "COMPLETED"
+          ? totalFiles
+          : Math.max(0, currentLevel - 1);
 
         const liveTeam = {
           team_id: teamRow?.id ?? teamId,
@@ -51,8 +56,8 @@ export default function TeamDetails({ teamId, onClose }) {
           team_code: teamRow?.team_code ?? "—",
           batch: teamRow?.batch ?? "—",
           status: session.status ?? teamRow?.status ?? "NOT_STARTED",
-          score: Number(session.score ?? 0),
-          files_unlocked: currentLevel - 1,
+          score: calculateScore({ files_unlocked: filesUnlocked }),
+          files_unlocked: filesUnlocked,
           current_file: currentLevel,
           last_file_unlocked_at: session.completed_at ?? session.started_at ?? "—",
           start_time: session.started_at ?? "—",

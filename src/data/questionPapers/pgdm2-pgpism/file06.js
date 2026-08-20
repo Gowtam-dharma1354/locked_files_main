@@ -8,6 +8,7 @@ export const PGDM2_PGPISM_FILE06 = [
     id: "PGDM2PGPISM_F06_Q01",
     category: "Finance",
     question: "What is the formula for calculating Return on Equity (ROE)?",
-    answer: "NET INCOME / SHAREHOLDERS EQUITY"
+    answer: "NET INCOME",
+    acceptedAnswers: ["SHAREHOLDERS EQUITY"]
   }
 ];

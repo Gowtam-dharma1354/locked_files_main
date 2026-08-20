@@ -259,22 +259,6 @@
   color: #374151;
 }
 
-/* Attempts Column */
-.attempts-cell {
-  text-align: center;
-  width: 80px;
-}
-
-.attempts-badge {
-  display: inline-block;
-  padding: 4px 8px;
-  background: #fef3c7;
-  border-radius: 4px;
-  font-weight: 600;
-  color: #92400e;
-  font-size: 13px;
-}
-
 /* Tab Switches Column */
 .tab-switch-cell {
   text-align: center;

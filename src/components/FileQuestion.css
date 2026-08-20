@@ -16,6 +16,21 @@
   z-index: 50;
 }
 
+.file-question-header .club-brand {
+  margin-bottom: 6px;
+}
+
+.file-question-header .club-brand-top,
+.file-question-header .club-brand-lock {
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+
+.file-question-header .club-brand-sub {
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
 .file-question-nav {
   display: flex;
   justify-content: space-between;

@@ -16,15 +16,14 @@
 }
 
 .opening-header {
-  margin-bottom: 48px;
+  margin-bottom: 42px;
 }
 
 .opening-brand {
-  font-size: 13px !important;
-  letter-spacing: 2px !important;
-  margin-bottom: 24px !important;
+  align-items: center;
+  margin-bottom: 0 !important;
   text-transform: uppercase;
-  color: var(--color-blue);
+  text-align: center;
 }
 
 .opening-title {

@@ -38,10 +38,20 @@
 }
 
 .login-brand {
-  font-size: 11px !important;
-  letter-spacing: 1.5px !important;
-  color: var(--text-light) !important;
+  color: var(--text-primary) !important;
   text-shadow: none !important;
+}
+
+.admin-panel-shell .login-brand,
+.admin-panel-shell .login-brand .club-brand-top,
+.admin-panel-shell .login-brand .club-brand-lock {
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+
+.admin-panel-shell .login-brand .club-brand-sub {
+  font-size: 9px;
+  letter-spacing: 1px;
 }
 
 .club-brand {
@@ -54,22 +64,22 @@
 
 .club-brand-top {
   font-weight: 700;
-  font-size: 14px;
+  font-size: clamp(32px, 4vw, 48px);
   color: var(--text-primary);
-  letter-spacing: 2px;
+  letter-spacing: 5px;
 }
 
 .club-brand-sub {
-  font-size: 10px;
+  font-size: clamp(16px, 1.8vw, 20px);
   color: var(--text-light);
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 
 .club-brand-lock {
-  font-size: 11px;
+  font-size: clamp(34px, 4.8vw, 64px);
   color: var(--color-blue);
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 4px;
 }
 
 .login-form-section {

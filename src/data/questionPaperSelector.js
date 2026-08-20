@@ -4,17 +4,14 @@
  * This implements the critical batch-specific question logic
  *
  * Rules:
- * - File 01: ALL batches receive COMMON_FILE_01
- * - File 02+: Batch-specific papers with group-based sharing
+ * - Files 01-04: ALL batches receive the four questions from COMMON_FILE_01
+ * - Files 05-15: Batch-specific papers with group-based sharing
  *   - PGDM 1st Year: GROUP A (own paper)
  *   - LLM: GROUP B (own paper)
  *   - PGDM 2nd Year + PGPISM: GROUP C (SHARED paper)
  */
 
 import { COMMON_FILE_01 } from "./questionPapers/common/file01";
-import { PGDM1_FILE02 } from "./questionPapers/pgdm1/file02";
-import { PGDM1_FILE03 } from "./questionPapers/pgdm1/file03";
-import { PGDM1_FILE04 } from "./questionPapers/pgdm1/file04";
 import { PGDM1_FILE05 } from "./questionPapers/pgdm1/file05";
 import { PGDM1_FILE06 } from "./questionPapers/pgdm1/file06";
 import { PGDM1_FILE07 } from "./questionPapers/pgdm1/file07";
@@ -26,9 +23,6 @@ import { PGDM1_FILE12 } from "./questionPapers/pgdm1/file12";
 import { PGDM1_FILE13 } from "./questionPapers/pgdm1/file13";
 import { PGDM1_FILE14 } from "./questionPapers/pgdm1/file14";
 import { PGDM1_FILE15 } from "./questionPapers/pgdm1/file15";
-import { LLM_FILE02 } from "./questionPapers/llm/file02";
-import { LLM_FILE03 } from "./questionPapers/llm/file03";
-import { LLM_FILE04 } from "./questionPapers/llm/file04";
 import { LLM_FILE05 } from "./questionPapers/llm/file05";
 import { LLM_FILE06 } from "./questionPapers/llm/file06";
 import { LLM_FILE07 } from "./questionPapers/llm/file07";
@@ -40,9 +34,6 @@ import { LLM_FILE12 } from "./questionPapers/llm/file12";
 import { LLM_FILE13 } from "./questionPapers/llm/file13";
 import { LLM_FILE14 } from "./questionPapers/llm/file14";
 import { LLM_FILE15 } from "./questionPapers/llm/file15";
-import { PGDM2_PGPISM_FILE02 } from "./questionPapers/pgdm2-pgpism/file02";
-import { PGDM2_PGPISM_FILE03 } from "./questionPapers/pgdm2-pgpism/file03";
-import { PGDM2_PGPISM_FILE04 } from "./questionPapers/pgdm2-pgpism/file04";
 import { PGDM2_PGPISM_FILE05 } from "./questionPapers/pgdm2-pgpism/file05";
 import { PGDM2_PGPISM_FILE06 } from "./questionPapers/pgdm2-pgpism/file06";
 import { PGDM2_PGPISM_FILE07 } from "./questionPapers/pgdm2-pgpism/file07";
@@ -63,34 +54,39 @@ import { PGDM2_PGPISM_FILE15 } from "./questionPapers/pgdm2-pgpism/file15";
  * @returns {array} Array of questions for this paper
  */
 export const getQuestionPaper = (batch, fileNumber) => {
-  // File 01 is always common for all batches
-  if (fileNumber === 1) {
-    return COMMON_FILE_01;
+  // Files 01-04 are always common for all batches, one question per file.
+  const normalizedFileNumber = Number(fileNumber);
+  if (normalizedFileNumber >= 1 && normalizedFileNumber <= 4) {
+    return COMMON_FILE_01[normalizedFileNumber - 1]
+      ? [COMMON_FILE_01[normalizedFileNumber - 1]]
+      : [];
   }
 
-  // Files 02-15: Batch-specific papers
-  switch (batch) {
-    case "PGDM_1":
-      return getPGDM1Paper(fileNumber);
-    case "PGDM_2":
-      return getPGDM2_PGPISMPaper(fileNumber);
+  // Files 05-15 use the batch-specific paper group.
+  switch (normalizeBatch(batch)) {
+    case "PGDM1":
+      return getPGDM1Paper(normalizedFileNumber);
+    case "PGDM2":
+      return getPGDM2_PGPISMPaper(normalizedFileNumber);
     case "PGPISM":
-      return getPGDM2_PGPISMPaper(fileNumber);
+      return getPGDM2_PGPISMPaper(normalizedFileNumber);
     case "LLM":
-      return getLLMPaper(fileNumber);
+      return getLLMPaper(normalizedFileNumber);
     default:
-      return COMMON_FILE_01; // fallback
+      return [];
   }
 };
+
+const normalizeBatch = (batch) => String(batch || "")
+  .trim()
+  .toUpperCase()
+  .replace(/[^A-Z0-9]/g, "");
 
 /**
  * Get PGDM 1st Year (Group A) question paper
  */
 const getPGDM1Paper = (fileNumber) => {
   const pgdm1Papers = {
-    2: PGDM1_FILE02,
-    3: PGDM1_FILE03,
-    4: PGDM1_FILE04,
     5: PGDM1_FILE05,
     6: PGDM1_FILE06,
     7: PGDM1_FILE07,
@@ -111,9 +107,6 @@ const getPGDM1Paper = (fileNumber) => {
  */
 const getLLMPaper = (fileNumber) => {
   const llmPapers = {
-    2: LLM_FILE02,
-    3: LLM_FILE03,
-    4: LLM_FILE04,
     5: LLM_FILE05,
     6: LLM_FILE06,
     7: LLM_FILE07,
@@ -135,9 +128,6 @@ const getLLMPaper = (fileNumber) => {
  */
 const getPGDM2_PGPISMPaper = (fileNumber) => {
   const groupCPapers = {
-    2: PGDM2_PGPISM_FILE02,
-    3: PGDM2_PGPISM_FILE03,
-    4: PGDM2_PGPISM_FILE04,
     5: PGDM2_PGPISM_FILE05,
     6: PGDM2_PGPISM_FILE06,
     7: PGDM2_PGPISM_FILE07,
@@ -159,10 +149,10 @@ const getPGDM2_PGPISMPaper = (fileNumber) => {
  */
 export const getBatchGroup = (batch) => {
   const groupMap = {
-    PGDM_1: "GROUP_A",
-    PGDM_2: "GROUP_C",
+    PGDM1: "GROUP_A",
+    PGDM2: "GROUP_C",
     PGPISM: "GROUP_C",
     LLM: "GROUP_B"
   };
-  return groupMap[batch] || "COMMON";
+  return groupMap[normalizeBatch(batch)] || "COMMON";
 };

@@ -22,8 +22,8 @@ export const COMPETITION_CONFIG = {
     { value: "LLM", label: "LLM" }
   ],
 
-  // Batch grouping for question papers from File 02 onward
-  // File 01 is always COMMON for all batches
+  // Batch grouping for question papers from File 05 onward
+  // Files 01-04 are always COMMON for all batches
   BATCH_GROUPS: {
     PGDM_1: "group_a",
     PGDM_2: "group_c",

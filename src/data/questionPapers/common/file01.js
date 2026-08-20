@@ -27,18 +27,5 @@ export const COMMON_FILE_01 = [
     category: "Finance",
     question: "Four analysts — A, B, C and D — achieved different scores. • A scored higher than B. • C scored lower than D. • B scored higher than D. Who scored second highest?",
     answer: "B"
-  },
-  {
-    id: "FILE01_Q05",
-    category: "Finance",
-    question: "A company issues 10 million new shares to the public. Is this: A. Offer for Sale B. Fresh Issue",
-    answer: "FRESH",
-    acceptedAnswers: ["FRESH ISSUE"]
-  },
-  {
-    id: "FILE01_Q06",
-    category: "Finance",
-    question: "You buy a stock for ₹100 and sell it for ₹120. Ignoring dividends, what is your percentage return?",
-    answer: "20"
   }
 ];

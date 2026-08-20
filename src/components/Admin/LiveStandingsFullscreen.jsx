@@ -7,7 +7,8 @@
 import React, { useState, useEffect } from "react";
 import "./LiveStandingsFullscreen.css";
 import LiveStandingsTable from "./AdminStandingsTable";
-import { calculateRankings, formatTime } from "../../lib/rankingService";
+import ClubBrand from "../ClubBrand";
+import { calculateRankings, calculateScore, formatTime } from "../../lib/rankingService";
 import { COMPETITION_CONFIG } from "../../data/competitionConfig";
 import { supabase } from "../../lib/supabaseClient";
 
@@ -57,17 +58,20 @@ export default function LiveStandingsFullscreen() {
 
         const liveTeams = (teamRows || []).map((team) => {
           const session = sessionMap.get(team.id);
-          const currentLevel = session ? Number(session.current_level ?? 1) : 1;
-          const latestSolveSeconds = latestSolveByTeam.get(team.id)?.value ?? null;
           const sessionStatus = session?.status ?? "NOT_STARTED";
+          const currentLevel = sessionStatus === "COMPLETED"
+            ? totalFiles
+            : session ? Number(session.current_level ?? 1) : 1;
+          const filesUnlocked = sessionStatus === "COMPLETED" ? totalFiles : Math.max(0, currentLevel - 1);
+          const latestSolveSeconds = latestSolveByTeam.get(team.id)?.value ?? null;
 
           return {
             ...team,
             team_id: team.id,
-            score: session ? Number(session.score ?? 0) : 0,
+            score: calculateScore({ files_unlocked: filesUnlocked }),
             status: sessionStatus,
             current_file: currentLevel,
-            files_unlocked: currentLevel - 1,
+            files_unlocked: filesUnlocked,
             attempt_count: session ? Number(session.failed_attempts_total ?? 0) : 0,
             tab_switch_count: session ? Number(session.fullscreen_violations ?? 0) : 0,
             last_file_unlocked_at: session?.completed_at ?? session?.started_at ?? null,
@@ -96,6 +100,9 @@ export default function LiveStandingsFullscreen() {
     <div className="live-standings-fullscreen">
       {/* Header with Close Button */}
       <div className="fullscreen-header">
+        <div className="fullscreen-brand-wrap">
+          <ClubBrand className="fullscreen-brand" />
+        </div>
         <div className="fullscreen-header-content">
           <h1>LIVE STANDINGS</h1>
         </div>

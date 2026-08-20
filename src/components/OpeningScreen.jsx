@@ -14,8 +14,6 @@ export default function OpeningScreen({ onSelectTeam }) {
       <div className="opening-content">
         <div className="opening-header">
           <ClubBrand className="opening-brand" />
-          <h1 className="opening-title">LOCKED FILES</h1>
-          <p className="opening-subtitle">FinTech & Quant Club</p>
         </div>
 
         <div className="opening-divider" />

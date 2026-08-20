@@ -5,7 +5,7 @@
 
 import { calculateScore, calculateRankings } from "./rankingService";
 
-export const generateMockTeams = (count = 15, totalFiles = 12) => {
+export const generateMockTeams = (count = 15, totalFiles = 15) => {
   const batches = ["PGDM 1st Year", "PGDM 2nd Year", "PGPISM", "LLM"];
   const statuses = ["NOT_STARTED", "ACTIVE", "COMPLETED"];
 
@@ -80,7 +80,7 @@ export const generateMockTeams = (count = 15, totalFiles = 12) => {
   return calculateRankings(teams);
 };
 
-export const generateMockTeamDetails = (teamId, totalFiles = 12) => {
+export const generateMockTeamDetails = (teamId, totalFiles = 15) => {
   const teams = generateMockTeams(1, totalFiles);
   const team = teams[0];
 
