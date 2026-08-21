@@ -12,6 +12,7 @@
  */
 
 import { COMMON_FILE_01 } from "./questionPapers/common/file01";
+import { COMMON_FILE_15 } from "./questionPapers/common/file15";
 import { PGDM1_FILE05 } from "./questionPapers/pgdm1/file05";
 import { PGDM1_FILE06 } from "./questionPapers/pgdm1/file06";
 import { PGDM1_FILE07 } from "./questionPapers/pgdm1/file07";
@@ -56,6 +57,9 @@ import { PGDM2_PGPISM_FILE15 } from "./questionPapers/pgdm2_pgpism/file15";
 export const getQuestionPaper = (batch, fileNumber) => {
   // Files 01-04 are always common for all batches, one question per file.
   const normalizedFileNumber = Number(fileNumber);
+  if (normalizedFileNumber === 15) {
+    return COMMON_FILE_15;
+  }
   if (normalizedFileNumber >= 1 && normalizedFileNumber <= 4) {
     return COMMON_FILE_01[normalizedFileNumber - 1]
       ? [COMMON_FILE_01[normalizedFileNumber - 1]]
