@@ -7,7 +7,28 @@ export const PGDM1_FILE05 = [
   {
     id: "PGDM1_F05_Q01",
     category: "Finance",
-    question: "Find the next number: 3, 9, 27, 81, ?",
-    answer: "243"
+    question: `A country reports:
+
+Year 1
+
+Nominal GDP = ₹2,000 crore
+GDP Deflator = 100
+
+Year 2
+
+Nominal GDP = ₹2,300 crore
+GDP Deflator = 115
+
+Task
+
+Calculate:
+
+Real GDP in Year 2 at Year-1 prices
+Nominal GDP growth
+Real GDP growth
+Inflation rate
+Enter: Real GDP growth, rounded to nearest integer`,
+    answer: "33",
+    acceptedAnswers: ["34"]
   }
 ];
