@@ -7,7 +7,8 @@ export const LLM_FILE05 = [
   {
     id: "LLM_F05_Q01",
     category: "Finance",
-    question: "A company has Equity of ₹500M and Debt of ₹300M. What is the Debt-to-Equity ratio?",
-    answer: "0.6"
+    question: " How many days' written notice must a partner give to an LLP before resignation takes effect under Section 24 of the LLP Act, 2008? State only the number.",
+    answer: "30",
+    acceptableanswers: ["30", "thirty"]
   }
 ];
