@@ -7,7 +7,8 @@ export const PGDM2_PGPISM_FILE05 = [
   {
     id: "PGDM2PGPISM_F05_Q01",
     category: "Finance",
-    question: "What is the break-even point in terms of units sold if Fixed Costs are ₹50,000 and Contribution Margin per unit is ₹100?",
-    answer: "500"
+    question: "An investor buys a stock for ₹500 and sells it for ₹560 after receiving a dividend of ₹20 per share during the holding period. What is the investor's total holding-period return?",
+    answer: "16%",
+    acceptableanswers: ["16%", "16 percent", "0.16", "0.16%"]
   }
 ];

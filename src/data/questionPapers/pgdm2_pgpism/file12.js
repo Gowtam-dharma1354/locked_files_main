@@ -7,7 +7,8 @@ export const PGDM2_PGPISM_FILE07 = [
   {
     id: "PGDM2PGPISM_F07_Q01",
     category: "Finance",
-    question: "What does WACC stand for?",
-    answer: "WEIGHTED AVERAGE COST OF CAPITAL"
+    question: "A company has current assets of ₹240 crore and current liabilities of ₹160 crore. Inventory is ₹40 crore. What is the company's quick ratio?",
+    answer: "1.25",
+    acceptableanswers: ["1.25", "5/4", "1 1/4"]
   }
 ];
