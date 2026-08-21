@@ -5,9 +5,8 @@
  */
 
 export const COMPETITION_CONFIG = {
-  // Total number of files in the competition
-  // Files 01-09 are common, Files 10-19 are department-specific, and File 20 is common.
-  TOTAL_FILES: 20,
+  // Total number of common questions in the competition.
+  TOTAL_FILES: 10,
 
   // Event branding
   EVENT_NAME: "LOCKED FILES",
@@ -22,8 +21,7 @@ export const COMPETITION_CONFIG = {
     { value: "LLM", label: "LLM" }
   ],
 
-  // Batch grouping for question papers from File 05 onward
-  // Files 01-04 are always COMMON for all batches
+  // All batches use the common question paper.
   BATCH_GROUPS: {
     PGDM_1: "group_a",
     PGDM_2: "group_c",

@@ -82,7 +82,7 @@ export const PGDM2_PGPISM_HARD_QUESTIONS = [
   {
     id: "PGDM2PGPISM_FI_Q39",
     category: "Financial Instruments",
-    question: "A bond portfolio has a market value of ₹50 crore and modified duration of 6.2 years. Interest rates increase by 75 basis points. Ignoring convexity, calculate the change in portfolio value in crore. Answer upto 3 decimals",
+    question: "A bond portfolio has a market value of ₹50 crore and modified duration of 6.2 years. Interest rates increase by 75 basis points. Ignoring convexity, calculate the change in portfolio value in crore.",
     answer: "-2.325",
     acceptedAnswers: ["-2.325", "-2.3250", "-₹2.325"]
   },
