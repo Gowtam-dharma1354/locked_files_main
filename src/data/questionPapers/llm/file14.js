@@ -1,14 +1,13 @@
 /**
- * LLM - File 14
+ * LLM - File 09
  * Group B specific questions
  */
 
-export const LLM_FILE14 = [
+export const LLM_FILE09 = [
   {
-    id: "LLM_F14_Q01",
+    id: "LLM_F09_Q01",
     category: "Finance",
-    question: " A manufacturing firm's corporate data shows it has crossed the statutory turnover requirement, and its audited financial statements reflect net profits of ₹12 Crore, ₹18 Crore, and ₹24 Crore for the three immediately preceding financial years respectively; what is the minimum statutory budget amount that the board of directors must allocate for CSR spending in the current financial year? ",
-    answer: "3600000",
-    acceptableanswers: ["3600000", "₹36,00,000", "36,00,000", "36 lakh", "36 lakhs"]
+    question: "Mr. Arjun, a promoter of Vertex Industries Ltd., a listed company, holds 22% of the paid-up equity share capital as on 1 April 2024. During FY 2024–25, he acquires an additional 4.2% through market purchases. In FY 2025–26, he proposes to acquire a further 5.5% through market purchases and preferential allotment.  What percentage of voting rights will Mr. Arjun hold after his FY 2024–25 acquisition ? ",
+    answer: "26.2"
   }
 ];

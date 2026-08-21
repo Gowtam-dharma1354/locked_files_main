@@ -101,7 +101,7 @@ export const getFileScore = (fileNumber) => {
   const normalizedFileNumber = Number(fileNumber);
   if (normalizedFileNumber >= 1 && normalizedFileNumber <= 4) return 5;
   if (normalizedFileNumber >= 5 && normalizedFileNumber <= 11) return 10;
-  if (normalizedFileNumber >= 12 && normalizedFileNumber <= 15) return 15;
+  if (normalizedFileNumber >= 12 && normalizedFileNumber <= 20) return 15;
   return 0;
 };
 

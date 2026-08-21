@@ -1,13 +1,13 @@
 /**
- * PGDM 2nd Year + PGPISM - File 15
+ * PGDM 2nd Year + PGPISM - File 10
  * Group C specific questions (SHARED by both PGDM 2nd Year and PGPISM)
  */
 
-export const PGDM2_PGPISM_FILE15 = [
+export const PGDM2_PGPISM_FILE10 = [
   {
-    id: "PGDM2PGPISM_F15_Q01",
+    id: "PGDM2PGPISM_F10_Q01",
     category: "Finance",
-    question: "What is the Black-Scholes model primarily used for?",
-    answer: "OPTIONS PRICING"
+    question: "What is the Efficient Market Hypothesis?",
+    answer: "ALL AVAILABLE INFORMATION IS REFLECTED IN ASSET PRICES"
   }
 ];

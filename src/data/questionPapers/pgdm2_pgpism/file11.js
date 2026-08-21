@@ -1,13 +1,14 @@
 /**
- * PGDM 2nd Year + PGPISM - File 11
+ * PGDM 2nd Year + PGPISM - File 06
  * Group C specific questions (SHARED by both PGDM 2nd Year and PGPISM)
  */
 
-export const PGDM2_PGPISM_FILE11 = [
+export const PGDM2_PGPISM_FILE06 = [
   {
-    id: "PGDM2PGPISM_F11_Q01",
+    id: "PGDM2PGPISM_F06_Q01",
     category: "Finance",
-    question: "What is a 'Credit Default Swap' used for?",
-    answer: "HEDGING CREDIT RISK"
+    question: "What is the formula for calculating Return on Equity (ROE)?",
+    answer: "NET INCOME",
+    acceptedAnswers: ["SHAREHOLDERS EQUITY"]
   }
 ];

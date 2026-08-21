@@ -6,8 +6,8 @@
 
 export const COMPETITION_CONFIG = {
   // Total number of files in the competition
-  // Can be configured to 10, 11, 12, 13, 14, or 15
-  TOTAL_FILES: 15,
+  // Files 01-09 are common, Files 10-19 are department-specific, and File 20 is common.
+  TOTAL_FILES: 20,
 
   // Event branding
   EVENT_NAME: "LOCKED FILES",

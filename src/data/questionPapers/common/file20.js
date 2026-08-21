@@ -1,8 +1,8 @@
 /**
- * Common File 15 - Question for ALL batches
+ * Common File 20 - Question for ALL batches
  */
 
-export const COMMON_FILE_15 = [
+export const COMMON_FILE_20 = [
   {
     id: "COMMON_F15_Q01",
     category: "logical_reasoning",

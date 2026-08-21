@@ -1,13 +1,13 @@
 /**
- * PGDM 1st Year - File 10
+ * PGDM 1st Year - File 05
  * Group A specific questions
  */
 
-export const PGDM1_FILE10 = [
+export const PGDM1_FILE05 = [
   {
-    id: "PGDM1_F10_Q01",
+    id: "PGDM1_F05_Q01",
     category: "Finance",
-    question: "A stock moves from ₹150 to ₹180. What is the percentage return?",
-    answer: "20"
+    question: "Find the next number: 3, 9, 27, 81, ?",
+    answer: "243"
   }
 ];

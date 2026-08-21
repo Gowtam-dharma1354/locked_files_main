@@ -1,14 +1,13 @@
 /**
- * LLM - File 15
+ * LLM - File 10
  * Group B specific questions
  */
 
-export const LLM_FILE15 = [
+export const LLM_FILE10 = [
   {
-    id: "LLM_F15_Q01",
+    id: "LLM_F10_Q01",
     category: "Finance",
-    question: "An acquirer enters into an agreement to acquire a 26% stake in a frequently traded public target company at a negotiated price of ₹620 per share, triggering an open offer under the SEBI SAST Regulations, where the historical volume-weighted average price (VWAP) paid by the acquirer during the 52 weeks preceding the public announcement is ₹595, the highest price paid by the acquirer during the 26 weeks preceding the announcement is ₹645, and the volume-weighted average market price on the stock exchange over the 60 trading days preceding the announcement is ₹610; assuming the final minimum open offer price must be offered, what is the total percentage premium that public shareholders receive relative to the 60-day volume-weighted average market price? ",
-    answer: "5.74",
-    acceptableanswers: ["5.74", "5.74%", "5.7400%", "5.7400"]
+    question: "Mr. Arjun, a promoter of Vertex Industries Ltd., a listed company, holds 22% of the paid-up equity share capital as on 1 April 2024. During FY 2024–25, he acquires an additional 4.2% through market purchases. In FY 2025–26, he proposes to acquire a further 5.5% through market purchases and preferential allotment. What is the total percentage of voting rights that Mr. Arjun will hold after his FY 2025–26 acquisition ? ",
+    answer: "31.7"
   }
 ];
