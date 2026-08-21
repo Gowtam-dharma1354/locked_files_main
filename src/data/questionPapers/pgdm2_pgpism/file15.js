@@ -9,7 +9,7 @@ export const PGDM2_PGPISM_FILE10 = [
     category: "Finance",
     question: "A company has current assets of ₹300 crore and current liabilities of ₹150 crore. Inventory is ₹90 crore and prepaid expenses are ₹10 crore. The company then purchases additional inventory worth ₹30 crore entirely on credit. Calculate the current ratio and quick ratio immediately after this transaction.",
     answer: "Current ratio = 1.83; Quick ratio = 1.11 approximately",
-    acceptableanswers: [
+    acceptedAnswers: [
       "1.83 and 1.11",
       "Current ratio 1.83; quick ratio 1.11",
       "1.83 and 1.11 approximately",

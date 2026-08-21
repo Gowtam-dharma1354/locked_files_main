@@ -9,7 +9,7 @@ export const PGDM2_PGPISM_FILE11 = [
     category: "Finance",
     question: "A company has revenue of ₹800 crore, average accounts receivable of ₹100 crore, average inventory of ₹120 crore and cost of goods sold of ₹480 crore. Using a 360-day year, calculate the receivables collection period and inventory holding period. Which one is longer, and by how many days?",
     answer: "Receivables Collection Period = 45 days; Inventory Holding Period = 90 days; Inventory holding period is longer by 45 days",
-    acceptableanswers: ["45 days, 90 days, 45 days",
+    acceptedAnswers: ["45 days, 90 days, 45 days",
       "45, 90, 45",
       "Receivables 45 days; inventory 90 days; difference 45 days"
     ]  

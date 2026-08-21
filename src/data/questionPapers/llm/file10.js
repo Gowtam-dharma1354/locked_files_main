@@ -9,6 +9,6 @@ export const LLM_FILE05 = [
     category: "Finance",
     question: " How many days' written notice must a partner give to an LLP before resignation takes effect under Section 24 of the LLP Act, 2008? State only the number.",
     answer: "30",
-    acceptableanswers: ["30", "thirty"]
+    acceptedAnswers: ["30", "thirty"]
   }
 ];

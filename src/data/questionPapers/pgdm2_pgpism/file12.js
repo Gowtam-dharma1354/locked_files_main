@@ -9,6 +9,6 @@ export const PGDM2_PGPISM_FILE07 = [
     category: "Finance",
     question: "A company has current assets of ₹240 crore and current liabilities of ₹160 crore. Inventory is ₹40 crore. What is the company's quick ratio?",
     answer: "1.25",
-    acceptableanswers: ["1.25", "5/4", "1 1/4"]
+    acceptedAnswers: ["1.25", "5/4", "1 1/4"]
   }
 ];
