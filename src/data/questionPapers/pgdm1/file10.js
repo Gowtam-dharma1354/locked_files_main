@@ -28,7 +28,7 @@ Nominal GDP growth
 Real GDP growth
 Inflation rate
 Enter: Real GDP growth, rounded to nearest integer`,
-    answer: "33",
-    acceptedAnswers: ["34"]
+    answer: "0",
+    acceptedAnswers: ["0"]
   }
 ];
